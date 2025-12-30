@@ -69,7 +69,52 @@ func part1(ranges []*Range) {
 	fmt.Println("part1 solution: ", sum)
 }
 
+func CheckValidity2(r *Range) (invalidIDs []int) {
+	for i := r.start; i <= r.end; i++ {
+		s := strconv.Itoa(i)
+		length := len(s)
+
+	outer:
+		for j := 2; j <= length; j++ {
+			if length%j == 0 {
+				substring := s[:length/j]
+				invalid := false
+			inner:
+				for k := 2; k <= j; k++ {
+					if substring != s[(length/j)*(k-1):k*length/j] {
+						invalid = false
+						break inner
+					}
+
+					invalid = true
+				}
+				if invalid {
+					invalidIDs = append(invalidIDs, i)
+					break outer
+				}
+			}
+		}
+
+	}
+
+	return invalidIDs
+}
+
+func part2(ranges []*Range) {
+	allInvalidIDs := []int{}
+	for _, r := range ranges {
+		invalidIDs := CheckValidity2(r)
+		allInvalidIDs = append(allInvalidIDs, invalidIDs...)
+	}
+	sum := 0
+	for _, i := range allInvalidIDs {
+		sum += i
+	}
+	fmt.Println("part2 solution: ", sum)
+}
+
 func main() {
 	ranges := GetRanges()
 	part1(ranges)
+	part2(ranges)
 }
