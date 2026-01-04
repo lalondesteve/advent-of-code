@@ -43,12 +43,9 @@ func FindMaxJoltages(bank string, amount int) (joltages []int) {
 	return joltages
 }
 
-func main() {
-	joltages := GetBatteries()
-	amount := 2
-	sum := 0
-	for _, b := range joltages {
-		j := FindMaxJoltages(b, amount)
+func GetJoltagesSum(joltages []string, amount int) (sum int) {
+	for _, bank := range joltages {
+		j := FindMaxJoltages(bank, amount)
 		value := 0
 		slices.Reverse(j)
 		for i, v := range j {
@@ -56,5 +53,15 @@ func main() {
 		}
 		sum += value
 	}
-	fmt.Println("part 1 answer:", sum)
+	return sum
+}
+
+func main() {
+	joltages := GetBatteries()
+	amountPart1 := 2
+	amountPart2 := 12
+	sum1 := GetJoltagesSum(joltages, amountPart1)
+	fmt.Println("part 1 answer:", sum1)
+	sum2 := GetJoltagesSum(joltages, amountPart2)
+	fmt.Println("part 2 answer:", sum2)
 }
